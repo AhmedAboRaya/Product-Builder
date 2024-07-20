@@ -18,7 +18,7 @@ interface IProps {
 
 const ProductCard = ({imageURL, imageAlt, className, title, description,price}: IProps) => {
     return (
-        <div className="p-2 text-white border-2 rounded-lg ">
+        <div className=" max-w-sm p-2 md:max-w-lg mx-auto text-white border-2 rounded-lg ">
             <Image 
                 imageURL={imageURL}
                 alt={imageAlt}
