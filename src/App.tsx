@@ -44,13 +44,17 @@ function App() {
       <Modal closeModal={closeModal} isOpen={isOpen} title='Add New Product'> 
 
 
-        <div className='flex-col flex items-center space-x-2'>
+        <form className='flex-col flex items-center space-x-2'>
           <div className='w-full pb-4'>
             {renderInputList}
           </div>
-          <Button bg='bg-blue-600' hover='hover:bg-blue-800' value='Submit' width='w-full'/>
-          <Button bg='bg-gray-400' hover='hover:bg-gray-500' value='Cancel' width='w-full' onClick={closeModal}/>
-        </div>
+
+          <div className='flex space-x-1 w-full'>
+            <Button bg='bg-blue-600' hover='hover:bg-blue-800' value='Submit' width='w-full'/>
+            <Button bg='bg-gray-400' hover='hover:bg-gray-500' value='Cancel' width='w-full' onClick={closeModal}/>
+          </div>
+
+        </form>
 
       </Modal>
     </>
