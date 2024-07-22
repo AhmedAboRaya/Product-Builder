@@ -38,8 +38,8 @@ const ProductCard = ({imageURL, imageAlt, className, title, description,price}: 
             </div>
 
             <div className="grid grid-cols-2 space-x-2">
-                <Button value={"Edit"} bg="bg-blue-500" onClick={()=>{console.log("Clicked")}}/>
-                <Button value={"Delete"} bg="bg-red-500" />
+                <Button value={"Edit"} bg="bg-blue-600" hover='hover:bg-blue-800' onClick={()=>{console.log("Clicked")}}/>
+                <Button value={"Delete"} bg="bg-red-600" hover='hover:bg-red-800' />
             </div>
 
         </div>

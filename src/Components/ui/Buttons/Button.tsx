@@ -4,14 +4,14 @@ interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     value: string;
     bg: string;
     width?: "w-full" | "w-fit";
-    onClickFN?: ()=>void;
+    hover?: string;
 }
 
-const Button: React.FC<IProps> = ({ value, bg, width, onClickFN, ...rest }) => {
+const Button: React.FC<IProps> = ({ value, bg, width, hover, ...rest }) => {
     return (
-        <button  onClick={onClickFN}
+        <button
             {...rest} 
-            className={`${bg} ${width}  mb-2 text-lg rounded-md text-white py-1`}>
+            className={`${bg} ${width} ${hover}  mb-2 text-lg rounded-lg text-white py-1`}>
             {value}
         </button>
     );
