@@ -1,6 +1,6 @@
 
 export interface IProduct {
-    id?: number;
+    id?: number | undefined;
     title: string;
     description: string;
     imageURL: string;
@@ -78,7 +78,7 @@ export const productList: IProduct[] = [
 
 export interface IFormInput {
     id: string;
-    name: string;
+    name: "title" | "description" | "imageURL" | "price";
     label: string;
     type: string;
     
