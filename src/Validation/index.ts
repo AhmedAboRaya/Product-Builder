@@ -23,11 +23,11 @@ export const productValidation = ( product :  IProduct ) => {
 
     // Validate on Title
     if(!product.title.trim() || product.title.length < 10 || product.title.length > 80){
-        errors.title= " Product title must be between 10 and 80 characters!";
+        errors.title= "Product title must be between 10 and 80 characters!";
     }
     // Validate on Description
     if(!product.description.trim() || product.description.length < 10 || product.description.length > 800){
-        errors.description= " Product description must be between 10 and 80 characters!";
+        errors.description= "Product description must be between 10 and 800 characters!";
     }
     // Validate on ImageURL
     if(!product.imageURL.trim() || !validURL){
@@ -35,7 +35,7 @@ export const productValidation = ( product :  IProduct ) => {
     }
     // Validate on Price
     if(!product.price.trim() || isNaN(Number(product.price))){
-        errors.price= " Product description must be between 10 and 80 characters!";
+        errors.price= "Product price must be a number";
     }
 
     return errors;

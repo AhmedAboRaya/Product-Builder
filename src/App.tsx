@@ -5,6 +5,7 @@ import Input from './Components/ui/Input'
 import { productValidation } from './Validation'
 import { useState,ChangeEvent } from 'react'
 import { formInputList, IProduct, productList } from "./Data";
+import ErrorMessage from './Components/ErrorMessage'
 
 
 function App() {
@@ -22,6 +23,13 @@ function App() {
   /*_________ STATES _______*/
   const [isOpen, setIsOpen] = useState(false);
 
+  const [error, setErrors] = useState({
+    title: "",
+    description: "",
+    imageURL: "",
+    price: ""
+  })
+
   const [product, setProduct] = useState <IProduct>(
     defaultProductObj
   );
@@ -37,6 +45,11 @@ function App() {
       ...product,
       [name]: value
     })
+
+    setErrors ({
+      ...error,
+      [name]: value
+    })
     
   };
 
@@ -49,7 +62,16 @@ function App() {
       imageURL: product.imageURL
     });
     console.log(errors);
-    console.log(product);
+
+    const hasErrorMsg = Object.values(errors).some(value => value === "") && Object.values(errors).every(value => value === "");
+    
+    if(!hasErrorMsg){
+      setErrors(errors);
+      return;
+    }
+    
+    console.log("Send Data to server");
+
     
     // productList.push(product);
   }
@@ -65,6 +87,7 @@ function App() {
     <div className='flex flex-col' key={input.id}>
       <label htmlFor={input.id} className='ml-1 mb-1 font-semibold text-black'> {input.label} </label>
       <Input type={input.type} id={input.id} name={input.name} value={product[input.name]} onChange={ onChangeHandler }/>
+      <ErrorMessage msg={error[input.name]}/>
     </div>
 
   ));
