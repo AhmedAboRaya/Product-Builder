@@ -2,6 +2,7 @@ import Card from './Components/Card'
 import Modal from './Components/ui/Modal/Modal'
 import Button from './Components/ui/Buttons/Button'
 import Input from './Components/ui/Input'
+import { productValidation } from './Validation'
 import { useState,ChangeEvent } from 'react'
 import { formInputList, IProduct, productList } from "./Data";
 
@@ -39,10 +40,16 @@ function App() {
     
   };
 
-  const addProductHandler = (event:ChangeEvent<HTMLInputElement>) => {
+  const onSubmitHandler = (event:ChangeEvent<HTMLInputElement>) => {
     event?.preventDefault();
+    const errors = productValidation({
+      description: product.description,
+      title: product.title,
+      price: product.price,
+      imageURL: product.imageURL
+    });
+    console.log(errors);
     console.log(product);
-    closeModal();
     
     // productList.push(product);
   }
@@ -77,7 +84,7 @@ function App() {
       <Modal closeModal={closeModal} isOpen={isOpen} title='Add New Product'> 
 
 
-        <form className='flex-col flex items-center space-x-2' onSubmit={addProductHandler}>
+        <form className='flex-col flex items-center space-x-2' onSubmit={onSubmitHandler}>
           <div className='w-full pb-4'>
             {renderInputList}
           </div>
