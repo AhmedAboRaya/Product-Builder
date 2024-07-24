@@ -8,6 +8,16 @@ export interface IProduct {
     colors?: string[];
     price: string;
 }
+
+export interface IFormInput {
+    id: string;
+    name: "title" | "description" | "imageURL" | "price";
+    label: string;
+    type: string;
+    
+}
+
+
 export const productList: IProduct[] = [
     {
         id: uuidv4(),
@@ -69,13 +79,7 @@ export const productList: IProduct[] = [
 
 
 
-export interface IFormInput {
-    id: string;
-    name: "title" | "description" | "imageURL" | "price";
-    label: string;
-    type: string;
-    
-}
+
 
 export const formInputList: IFormInput[]= [
     {
