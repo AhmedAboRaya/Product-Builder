@@ -2,7 +2,7 @@
 import Image from "./Image"
 import CardTitle from "./CardTitle"
 import CardDescription from "./CardDescription"
-import CardColors from "./CardColors"
+import CircleColor from "./ui/CircleColor"
 import CardPrice from "./CardPrice"
 import Button from "./ui/Buttons/Button"
 
@@ -14,9 +14,14 @@ interface IProps {
     title: string;
     description: string;
     price: string;
+    colors?: string[];
 }
 
-const ProductCard = ({imageURL, imageAlt, className, title, description,price}: IProps) => {
+
+
+const ProductCard = ({imageURL, imageAlt, className, title, description, price,colors}: IProps) => {
+
+    const renderColors = colors?.map(color => <CircleColor key={color} color={color}/>)
     return (
         <div className=" max-w-sm p-2 md:max-w-lg mx-auto text-white border-2 rounded-lg ">
             <Image 
@@ -27,10 +32,12 @@ const ProductCard = ({imageURL, imageAlt, className, title, description,price}: 
             <CardTitle title={title} />
             <CardDescription description={description} />
 
-            <div className="flex space-x-2">
-                <CardColors color={"bg-amber-400"}/>
-                <CardColors color={"bg-red-700"}/>
-                <CardColors color={"bg-blue-700"}/>
+            <div className="flex space-x-2 flex-wrap">
+                {renderColors}
+            </div>
+
+            <div>
+
             </div>
             
             <div className="flex justify-between my-2">

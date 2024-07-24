@@ -4,7 +4,7 @@ interface IProps {
 
 const CardTitle = ({title}: IProps) => {
     return (
-        <h2 className="text-black text-left text-lg font-semibold ml-2">{title}</h2>
+        <h2 className="text-black text-left text-md sm:text-md lg:text-lg font-bold ml-2 mt-2">{title}</h2>
     )
 }
 

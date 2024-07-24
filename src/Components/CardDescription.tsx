@@ -4,7 +4,7 @@ interface IProps {
 
 const CardDescription = ({description}: IProps) => {
     return (
-        <p className="text-gray-900 mt-3 ml-2">{description}</p>
+        <p className="text-gray-900 mt-2 ml-2 text-sm sm:text-md md:text-md lg:tetx-lg">{description}</p>
     )
 }
 
