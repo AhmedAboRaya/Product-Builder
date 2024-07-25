@@ -8,7 +8,7 @@ import { HTMLAttributes } from "react";
 import { IProduct } from "../Data";
 
 interface IProps extends HTMLAttributes<HTMLDivElement> {
-  key?: number;
+  key?: number | undefined ;
   imageURL: string;
   imageAlt: string;
   className: string;
@@ -42,12 +42,10 @@ const ProductCard = ({
 
   const product = {
     imageURL,
-    imageAlt,
-    className,
     title,
     description,
     price,
-    colors,
+    colors
   };
 
   const onEdit = () => {
@@ -56,7 +54,8 @@ const ProductCard = ({
     setProductToEditIdx(idx);
   };
 
-  const onDelete= () => {
+  const oPenDeleteModal= () => {
+    setProductToEdit(product);
     setIsProductDelete(true);
   }
 
@@ -81,7 +80,7 @@ const ProductCard = ({
           hover="hover:bg-blue-800"
           onClick={onEdit}
         />
-        <Button value={"Delete"} bg="bg-red-600" hover="hover:bg-red-800" onClick={onDelete}/>
+        <Button value={"Delete"} bg="bg-red-600" hover="hover:bg-red-800" onClick={oPenDeleteModal}/>
       </div>
     </div>
   );

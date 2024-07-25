@@ -5,19 +5,18 @@ import ErrorMessage from "./Components/ErrorMessage";
 import CircleColor from "./Components/ui/CircleColor";
 import { productValidation } from "./Validation";
 import { useState, ChangeEvent } from "react";
-import {
-  formInputList,
-  IProduct,
-  colors,
-  productList
-} from "./Data";
+import { formInputList, IProduct, colors, productList } from "./Data";
 import ProductCard from "./Components/ProductCard";
 import { txtSlice } from "./Utility/functions";
 import { v4 as uuidv4 } from "uuid";
+import toast, { Toaster } from "react-hot-toast"
+import Home from "./Components/Home";
+import Footer from "./Components/Footer";
 
 function App() {
   /*_________ CONSTANT _______*/
   const defaultProductObj: IProduct = {
+    id:0,
     title: "",
     description: "",
     imageURL: "",
@@ -41,14 +40,14 @@ function App() {
 
   const [products, setProducts] = useState<IProduct[]>(productList);
 
-  const [productToEdit, setProductToEdit] = useState<IProduct>(defaultProductObj);
+  const [productToEdit, setProductToEdit] =
+    useState<IProduct>(defaultProductObj);
 
   const [isOpenEditModel, setIsOpenEditModel] = useState<boolean>(false);
 
   const [productToEditIdx, setProductToEditIdx] = useState<number>(0);
 
-  const [isProductDelete, setIsProductDelete] = useState<boolean>(false);
-  
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
 
   /*_________ HANDLER _______*/
   const closeModal = () => setIsOpen(false);
@@ -58,6 +57,10 @@ function App() {
   const closeEditModal = () => setIsOpenEditModel(false);
 
   const openEditModal = () => setIsOpenEditModel(true);
+
+  const openDeleteModal = () => setIsOpenDeleteModal(true);
+
+  const closeDeleteModal = () => {event?.preventDefault();setIsOpenDeleteModal(false);}
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
@@ -84,6 +87,7 @@ function App() {
       [name]: "",
     });
   };
+  //  ----------------------------------------
 
   const onSubmitHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event?.preventDefault();
@@ -112,14 +116,35 @@ function App() {
     setTempColors([""]);
     setProduct(defaultProductObj);
     closeModal();
+    toast.success('Added Successfully',{
+      duration:2000
+    })
     console.log("Send Data to server");
   };
+  //  ----------------------------------------
 
   const onCancelHandler = () => {
     setProduct(defaultProductObj);
     closeModal();
   };
-//  ----------------------------------------
+  //  ----------------------------------------
+
+  const onCancelEditHandler = () => {
+    setProductToEdit(defaultProductObj);
+    closeEditModal();
+  };
+  //  ----------------------------------------
+
+  const productDeleteHandler = () => {
+    console.log(productToEdit.title);
+    const filtered = products.filter(product => product.title !== productToEdit.title)
+    setProducts(filtered)
+    closeDeleteModal();
+    toast.error('Deleted Successfully',{
+      duration:2000
+    })    
+  };
+  //  ----------------------------------------
   const onSubmitEditHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event?.preventDefault();
 
@@ -141,11 +166,18 @@ function App() {
     }
 
     const updatedProduct = [...products];
-    updatedProduct[productToEditIdx] = productToEdit;
+    updatedProduct[productToEditIdx] = {
+      ...productToEdit,
+      colors: tempColor.concat(productToEdit.colors),
+    };
     setProducts(updatedProduct);
 
     setProductToEdit(defaultProductObj);
+    setTempColors([]);
     closeEditModal();
+    toast.success('Edit Successfully',{
+      duration:2000
+    })
     console.log("Send Data to server");
   };
 
@@ -168,7 +200,11 @@ function App() {
   ));
 
   /*_________ RENDER INPUT FORM OF EDIT _______*/
-  const renderProductEditWithErrorMsg = (id: string, label: string, name: keyof IProduct) => {
+  const renderProductEditWithErrorMsg = (
+    id: string,
+    label: string,
+    name: keyof IProduct
+  ) => {
     return (
       <div className="flex flex-col">
         <label htmlFor={"title"} className="ml-1 mb-1 font-semibold text-black">
@@ -193,7 +229,27 @@ function App() {
       color={color}
       onClick={() => {
         if (tempColor.includes(color)) {
-          // tempColor = tempColor.filter(element => element !== color);
+          setTempColors((prev) => prev.filter((element) => element !== color));
+          return;
+        }
+
+        setTempColors((prev) => [...prev, color]);
+      }}
+    />
+  ));
+
+  /*_________ RENDER COLORS IN EDIT FORM _______*/
+  const renderEditColors = colors.map((color) => (
+    <CircleColor
+      key={color}
+      color={color}
+      onClick={() => {
+        if (tempColor.includes(color)) {
+          setTempColors((prev) => prev.filter((element) => element !== color));
+          return;
+        }
+
+        if (productToEdit.colors.includes(color)) {
           setTempColors((prev) => prev.filter((element) => element !== color));
           return;
         }
@@ -207,6 +263,7 @@ function App() {
 
   return (
     <>
+    <Home />
       <div className="container mx-auto pt-4">
         <Button
           bg="bg-blue-700"
@@ -231,11 +288,13 @@ function App() {
               setIsOpenEditModel={openEditModal}
               setProductToEditIdx={setProductToEditIdx}
               idx={idx}
-              setIsProductDelete={setIsProductDelete}
+              setIsProductDelete={openDeleteModal}
             />
           ))}
         </div>
       </div>
+
+      <Footer />
 
       {/** ADD MODEL **/}
       <Modal closeModal={closeModal} isOpen={isOpen} title="Add New Product">
@@ -290,11 +349,34 @@ function App() {
           className="flex-col flex  space-x-2"
           onSubmit={onSubmitEditHandler}
         >
-          
           {renderProductEditWithErrorMsg("title", "Product Title", "title")}
-          {renderProductEditWithErrorMsg("description", "Product Description", "description")}
-          {renderProductEditWithErrorMsg("imageURL", "Product Image URL", "imageURL")}
+          {renderProductEditWithErrorMsg(
+            "description",
+            "Product Description",
+            "description"
+          )}
+          {renderProductEditWithErrorMsg(
+            "imageURL",
+            "Product Image URL",
+            "imageURL"
+          )}
           {renderProductEditWithErrorMsg("price", "Product Price", "price")}
+
+          <div className="flex flex-row justify-start space-x-1 flex-wrap">
+            {renderEditColors}
+          </div>
+
+          <div className="flex flex-row justify-start space-x-1 flex-wrap">
+            {tempColor.concat(productToEdit.colors).map((color) => (
+              <span
+                key={color}
+                className="p-[2px] text-white text-sm mb-1 rounded-md"
+                style={{ backgroundColor: color }}
+              >
+                {color}
+              </span>
+            ))}
+          </div>
 
           <div className="flex space-x-1 w-full">
             <Button
@@ -308,11 +390,47 @@ function App() {
               hover="hover:bg-gray-500"
               value="Cancel"
               width="w-full"
-              onClick={onCancelHandler}
+              onClick={onCancelEditHandler}
             />
           </div>
         </form>
       </Modal>
+
+      {/** Delete MODEL **/}
+      <Modal
+        closeModal={closeDeleteModal}
+        isOpen={isOpenDeleteModal}
+        title="Delete Product"
+      >
+        <p className="mb-3 text-gray-600 text-md">
+          Are you sure you want to delete this product? This action cannot be
+          undone, and you will not be able to recover the product.
+        </p>
+        <form
+          className="flex-col flex  space-x-2"
+          onSubmit={productDeleteHandler}
+        >
+          <div className="flex space-x-1 w-full">
+            <Button
+              bg="bg-red-600"
+              hover="hover:bg-red-800"
+              value="Yes, Delete"
+              width="w-full"
+            />
+            <Button
+              bg="bg-blue-600"
+              hover="hover:bg-blue-800"
+              value="Cancel"
+              width="w-full"
+              onClick={closeDeleteModal}
+            />
+          </div>
+        </form>
+      </Modal>
+
+      <div><Toaster/></div>
+
+      
     </>
   );
 }
