@@ -7,11 +7,12 @@
 
 
 <ul>
-  <li> Edit Products: You can modify any existing product. 🛠️
+  <li style="display:flex; align-items: center; justify-content: center;"> Edit Products: You can modify any existing product. 🛠️
       <img src="./editForm.png"/>
   </li>
-  <li> Add New Products: You can add new products to the list. ➕
+  <li style="display:flex; align-items: center; justify-content: center;"> Add New Products: You can add new products to the list. ➕
   <img src="./addForm.png"/>
   <img src="./addWithValidation.png"/></li>
-  <li>Delete Products: You can remove any product from the list. ❌ </li>
+  <li style="display:flex; align-items: center; justify-content: center;" >Delete Products: You can remove any product from the list. ❌
+   <img src="./deleteModal.png"/> </li>
 </ul>
