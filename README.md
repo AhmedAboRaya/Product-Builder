@@ -3,9 +3,6 @@
 
 <h3>🛠️ The project is a web application with the following features: </h3>
 
-
-
-
 <ul>
   <li> Edit Products: You can modify any existing product. 🛠️</li>
     <img src="./editForm.png"/>
